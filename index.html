@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="APP_DATA">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UniRoll - 75% Attendance & Shortage Alert Portal</title>
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="node_modules/angular/angular.js"></script>
+  <script src="script.js";></script>
+</head>
+<body>
+
+  <!-- Top Academic Compliance Banner -->
+  <div class="top-banner">
+    <div class="banner-inner">
+      <div class="banner-left">
+        <span class="live-pulse"></span>
+        <span><strong>Ordinance 7.1 Active:</strong> Mandatory 75.0% Attendance for End-Term Examination Eligibility</span>
+      </div>
+      <div class="banner-right">
+        <span class="threshold-chip">Shortage Alert Threshold: &lt; 75%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+            <path d="M6 6h10"/>
+            <path d="M6 10h10"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">
+            UniRoll <span>Academic Portal</span>
+            <span class="term-pill">AY 2026–27</span>
+          </div>
+          <div class="brand-sub">Faculty Roll-Call Desk • Live Percentage Engine • Dean's Shortage Warning System</div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="faculty" onclick="switchTab('faculty')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Faculty Roll-Call Desk
+        </button>
+        <button class="nav-tab" data-tab="dean" onclick="switchTab('dean')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Dean &amp; HOD Analytics
+          <span class="badge-red" id="navShortageCount">5</span>
+        </button>
+        <button class="nav-tab" data-tab="student" onclick="switchTab('student')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Student Portal &amp; Cards
+        </button>
+        <button class="nav-tab" data-tab="waivers" onclick="switchTab('waivers')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Waivers &amp; SMS Alerts
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Body Content -->
+  <main class="app-main">
+
+    <section id="facultySection" class="tab-panel active">
+
+      <!-- Faculty Roll-Call Desk Card -->
+      <div class="panel-card desk-card">
+        <div class="desk-header">
+          <div class="desk-title-block">
+            <div class="desk-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              <h2>Faculty Roll-Call Desk</h2>
+            </div>
+            <p class="desk-subtitle">Select Branch, Semester, Section, and Subject to take one-click roll-call or review past dates.</p>
+          </div>
+
+          <!-- Date Selector -->
+          <div class="date-selector-wrapper">
+            <span class="calendar-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Session Date:
+            </span>
+            <input type="date" id="sessionDate" value="2026-11-05" onchange="handleDateChange(this.value)" />
+            <button class="btn-today" onclick="setTodayDate()">Today</button>
+          </div>
+        </div>
+
+        <!-- Dropdowns Grid (4 columns) -->
+        <div class="selectors-grid">
+          <div class="form-control">
+            <label>BRANCH / DEPARTMENT</label>
+            <select id="branchSelect" onchange="handleCohortChange()">
+              <option value="CS">Computer Science &amp; Engg</option>
+              <option value="IS">Information Science &amp; Engg</option>
+              <option value="EC">Electronics &amp; Comm Engg</option>
+            </select>
+          </div>
+
+          <div class="form-control">
+            <label>SEMESTER</label>
+            <select id="semesterSelect" onchange="handleCohortChange()">
+              <option value="5">Semester 5 (Active Fall 2026)</option>
+              <option value="6">Semester 6</option>
+            </select>
+          </div>
+
+          <div class="form-control">
+            <label>SECTION</label>
+            <select id="sectionSelect" onchange="handleCohortChange()">
+              <option value="A">Section A (60 Students)</option>
+              <option value="B">Section B (60 Students)</option>
+            </select>
+          </div>
+
+          <div class="form-control">
+            <label>SUBJECT COURSE</label>
+            <select id="subjectSelect" onchange="handleCohortChange()"></select>
+          </div>
+        </div>
+
+        <!-- Historical Past Dates & Topic Row -->
+        <div class="history-topic-row">
+          <div class="history-chips">
+            <span class="chips-title">Historical Past Dates:</span>
+            <div id="chipsContainer" class="chips-list"></div>
+          </div>
+          <div class="topic-box">
+            <input type="text" id="sessionTopic" placeholder="Protection &amp; Security Domains in Modern OS" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Metric Summary Cards -->
+      <div class="metrics-grid">
+        <!-- 1. Present Today -->
+        <div class="metric-card metric-present">
+          <div class="metric-info">
+            <div class="metric-label">PRESENT TODAY</div>
+            <div class="metric-number"><span id="metricPresentCount">7</span> <span class="metric-denom">/12</span></div>
+            <div class="metric-sub" id="metricPresentPct">58% turn-out</div>
+          </div>
+          <div class="metric-icon-bubble bubble-emerald">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+          </div>
+        </div>
+
+        <!-- 2. Absent Today -->
+        <div class="metric-card metric-absent">
+          <div class="metric-info">
+            <div class="metric-label">ABSENT TODAY</div>
+            <div class="metric-number" id="metricAbsentCount">5</div>
+            <div class="metric-sub">Unexcused class absences</div>
+          </div>
+          <div class="metric-icon-bubble bubble-rose">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/></svg>
+          </div>
+        </div>
+
+        <!-- 3. Excused / Medical -->
+        <div class="metric-card metric-excused">
+          <div class="metric-info">
+            <div class="metric-label">EXCUSED / MEDICAL</div>
+            <div class="metric-number" id="metricExcusedCount">0</div>
+            <div class="metric-sub">Waiver applied</div>
+          </div>
+          <div class="metric-icon-bubble bubble-blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+        </div>
+
+        <!-- 4. Shortage Risk (<75%) -->
+        <div class="metric-card metric-risk">
+          <div class="metric-info">
+            <div class="metric-label">SHORTAGE RISK (&lt;75%)</div>
+            <div class="metric-number"><span id="metricRiskCount">5</span> <span class="metric-denom-label">Students</span></div>
+            <div class="metric-sub">Mandatory warning triggered</div>
+          </div>
+          <div class="metric-icon-bubble bubble-amber">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Toolbar -->
+      <div class="panel-card toolbar-card">
+        <div class="toolbar-left">
+          <button class="btn-action btn-mark-present" onclick="markAll('P')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Mark All Present
+          </button>
+          <button class="btn-action btn-mark-absent" onclick="markAll('A')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Mark All Absent
+          </button>
+
+          <!-- Filter Segmented Control -->
+          <div class="filter-group">
+            <button class="filter-pill active" onclick="setFilter('all')">All (<span id="filterAllCount">12</span>)</button>
+            <button class="filter-pill" onclick="setFilter('risk')">&lt;75% Risk (<span id="filterRiskCount">5</span>)</button>
+            <button class="filter-pill" onclick="setFilter('absent')">Absent Today (<span id="filterAbsentCount">5</span>)</button>
+          </div>
+
+          <!-- Search Input -->
+          <div class="search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search student / roll no..." oninput="handleSearch(this.value)" />
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <button class="btn-save" id="btnSaveAttendance" onclick="saveAttendance()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Attendance
+          </button>
+        </div>
+      </div>
+
+      <!-- Toast Feedback -->
+      <div id="saveToast" class="toast hidden">✓ Attendance saved successfully!</div>
+
+      <!-- Student Attendance Table -->
+      <div class="panel-card table-panel">
+        <div class="table-header-title">
+          <h3 id="tableCourseTitle">Student Attendance Matrix</h3>
+          <span class="table-legend">Click <strong>P</strong> (Present), <strong>A</strong> (Absent), or <strong>E</strong> (Excused) to update live percentage</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>STUDENT ID</th>
+                <th>STUDENT NAME &amp; ROLL</th>
+                <th class="text-center">SESSION STATUS (ONE-CLICK)</th>
+                <th class="text-center">ATTENDED / TOTAL</th>
+                <th class="text-center">LIVE ATTENDANCE %</th>
+                <th>75% SHORTAGE RISK WARNING</th>
+                <th class="text-right">ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="rosterTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: DEAN & HOD ANALYTICS ==================== -->
+    <section id="deanSection" class="tab-panel">
+      <div class="panel-card">
+        <div class="desk-header">
+          <div>
+            <h2 class="section-title">Dean &amp; Department Head Analytics View</h2>
+            <p class="desk-subtitle">Official 75% attendance threshold audit and examination eligibility list.</p>
+          </div>
+          <div class="actions-row">
+            <button class="btn-action btn-export" onclick="exportShortageCSV()">Export Official CSV</button>
+            <button class="btn-action btn-print" onclick="openPrintModal()">Print Notice</button>
+          </div>
+        </div>
+
+        <div class="analytics-layout">
+          <div class="chart-box">
+            <h4>Weekly Attendance Trends (75% Baseline Threshold)</h4>
+            <div id="weeklyBars" class="weekly-bars-container"></div>
+          </div>
+          <div class="dist-box">
+            <h4>Cohort Distribution</h4>
+            <div class="dist-row"><span>Distinction (&ge;85%)</span><strong id="dDist">0</strong></div>
+            <div class="dist-track"><div id="dDistBar" class="track-fill fill-green"></div></div>
+
+            <div class="dist-row"><span>Eligible (75-84%)</span><strong id="dElig">0</strong></div>
+            <div class="dist-track"><div id="dEligBar" class="track-fill fill-blue"></div></div>
+
+            <div class="dist-row"><span>Warning (70-74%)</span><strong id="dWarn">0</strong></div>
+            <div class="dist-track"><div id="dWarnBar" class="track-fill fill-amber"></div></div>
+
+            <div class="dist-row"><span>Critical Shortage (&lt;70%)</span><strong id="dCrit">0</strong></div>
+            <div class="dist-track"><div id="dCritBar" class="track-fill fill-red"></div></div>
+          </div>
+        </div>
+
+        <!-- Shortage List Table -->
+        <h3 class="shortage-title">Dean's Official Shortage Alert List (&lt;75% Threshold)</h3>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>STUDENT ID</th>
+                <th>NAME &amp; ROLL</th>
+                <th class="text-center">ATTENDED / TOTAL</th>
+                <th class="text-center">PERCENTAGE</th>
+                <th class="text-center">CLASSES NEEDED FOR 75%</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="shortageTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: STUDENT PORTAL ==================== -->
+    <section id="studentSection" class="tab-panel">
+      <div class="panel-card">
+        <div class="student-select-header">
+          <div>
+            <h2 id="portalStudentName">Dev Patel</h2>
+            <p id="portalStudentMeta" class="desk-subtitle">CS01 • 21CS101 • Computer Science Sem 5-A</p>
+          </div>
+          <div class="student-picker">
+            <label>View as Student:</label>
+            <select id="studentPicker" onchange="changeStudentView(this.value)"></select>
+          </div>
+        </div>
+<!-- ==================== "SAFE ZONE" ATTENDANCE PLANNER ==================== -->
+        <div class="planner-box mt-4">
+          <div class="planner-header">
+            <div>
+              <div class="planner-title">
+                <h3>☕ "Safe Zone" Attendance Planner (Student Bunk Calculator)</h3>
+                <span class="badge-planner">Interactive Strategy Tool</span>
+              </div>
+              <p class="planner-sub">Answer: "How many classes can I safely miss without dropping below 75%?" or "How many must I attend to get back above 75%?"</p>
+            </div>
+            <div class="planner-subject-select">
+              <label for="plannerSubject">Subject Course:</label>
+              <select id="plannerSubject" onchange="runBunkPlanner()"></select>
+            </div>
+          </div>
+
+          <div class="planner-grid">
+            <!-- 1. Targeted Safety Buffer Meter -->
+            <div class="planner-card">
+              <div class="planner-card-head">
+                <span class="planner-card-step">1. Targeted Safety Buffer</span>
+                <span class="planner-card-ratio" id="bufferRatio">28 / 32 Classes</span>
+              </div>
+              <div class="planner-current-pct">
+                <span class="big-pct" id="bufferCurrentPct">87.5%</span>
+                <span class="pct-lbl">Current Standing</span>
+              </div>
+
+              <div id="safetyBufferBanner" class="buffer-banner buffer-safe">
+                <div class="buffer-title" id="bufferTitle">Safe Zone Active</div>
+                <div class="buffer-msg" id="bufferMessage">You have <strong>3 safe skips</strong> remaining for CS501!</div>
+                <div class="buffer-sub" id="bufferSub">Can safely miss up to 3 classes without falling below 75.0%.</div>
+              </div>
+
+              <div class="buffer-meter-wrap">
+                <div class="meter-labels">
+                  <span>0%</span>
+                  <span class="marker-75">75% Mandatory</span>
+                  <span>100%</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-mark-75"></div>
+                  <div id="bufferMeterFill" class="meter-fill fill-green" style="width: 87.5%"></div>
+                </div>
+              </div>
+              <div class="planner-note">Formula: bunks = floor((4*Attended - 3*Total) / 3)</div>
+            </div>
+
+            <!-- 2. Goal Setter -->
+            <div class="planner-card">
+              <div class="planner-card-head">
+                <span class="planner-card-step">2. Milestone Goal Setter</span>
+                <span class="target-icon">🎯</span>
+              </div>
+              <p class="planner-card-desc">Set your target attendance goal to calculate required classes or safe skips.</p>
+              
+              <div class="goal-presets">
+                <button class="goal-btn active" onclick="setPlannerGoal(75)">75% (Min)</button>
+                <button class="goal-btn" onclick="setPlannerGoal(80)">80% (Safe)</button>
+                <button class="goal-btn" onclick="setPlannerGoal(85)">85% (Dist.)</button>
+                <button class="goal-btn" onclick="setPlannerGoal(90)">90% (Honor)</button>
+              </div>
+
+              <div class="custom-goal-wrap">
+                <div class="goal-slider-head">
+                  <span>Custom Goal:</span>
+                  <strong id="goalValText">75%</strong>
+                </div>
+                <input type="range" id="goalSlider" min="65" max="95" value="75" oninput="handleGoalSlider(this.value)" />
+              </div>
+
+              <div class="goal-result-box" id="goalResultBox">
+                <div class="goal-res-title">Calculated Plan:</div>
+                <div class="goal-res-main" id="goalPlanMain">You can skip 3 classes</div>
+                <div class="goal-res-sub" id="goalPlanSub">And remain at or above 75%.</div>
+              </div>
+              <div class="planner-note">Keeping attendance &gt; 80% protects you against unexpected illness.</div>
+            </div>
+
+            <!-- 3. Scenario Simulator (Prospective Calendar) -->
+            <div class="planner-card">
+              <div class="planner-card-head">
+                <span class="planner-card-step">3. Scenario Simulator</span>
+                <span class="cal-icon">📅</span>
+              </div>
+              <p class="planner-card-desc">Toggle prospective dates to simulate how taking a 3-day leave next week affects your %.</p>
+              
+              <div class="scenario-presets">
+                <button class="scen-preset-btn" onclick="applyCalendarPreset('attendAll')">Attend All</button>
+                <button class="scen-preset-btn btn-scen-leave" onclick="applyCalendarPreset('threeDayLeave')">3-Day Leave</button>
+                <button class="scen-preset-btn" onclick="applyCalendarPreset('skipTomorrow')">Skip Tomorrow</button>
+              </div>
+
+              <div class="prospective-list" id="prospectiveScheduleList"></div>
+
+              <div id="scenarioResultBox" class="sim-impact-box impact-safe">
+                <div class="impact-top">
+                  <span>SIMULATED PROJECTION:</span>
+                  <span id="scenarioPlannedSkips" class="font-mono">0 Skips</span>
+                </div>
+                <div class="impact-values" id="scenarioValues">87.5% &rarr; 88.2% (+0.7%)</div>
+                <div class="impact-desc" id="scenarioDesc">✓ Hall ticket eligibility securely maintained</div>
+              </div>
+              <div class="planner-note">Live simulation reflects across upcoming schedule.</div>
+            </div>
+          </div>
+        </div>
+        <!-- Student Multi-Subject Matrix -->
+        <h3 class="mt-4">Subject Attendance Breakdown</h3>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>SUBJECT</th>
+                <th>FACULTY</th>
+                <th class="text-center">ATTENDED / TOTAL</th>
+                <th class="text-center">PERCENTAGE</th>
+                <th>STATUS</th>
+                <th>RECOVERY ADVISORY</th>
+              </tr>
+            </thead>
+            <tbody id="studentBreakdownBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: WAIVERS & ALERTS ==================== -->
+    <section id="waiversSection" class="tab-panel">
+      <div class="panel-card">
+        <h2 class="section-title">Medical Leave Certificate &amp; Parent Alert Center</h2>
+        <p class="desk-subtitle">Waiver approvals automatically convert unexcused absences into Excused ('E') credits.</p>
+
+        <h3 class="mt-4">Pending Medical Certificates</h3>
+        <div id="waiverList" class="waiver-cards-list"></div>
+
+        <h3 class="mt-4">Automated 3-Consecutive Missed Lectures SMS Queue</h3>
+        <div id="alertList" class="alert-cards-list"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Student Inspection Modal -->
+  <div id="inspectModal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeInspectModal()">&times;</button>
+      <h3 id="inspectTitle">Student Record</h3>
+      <p id="inspectSub" class="desk-subtitle">Profile &amp; Multi-Subject Performance</p>
+      <div id="inspectContent" class="modal-content-area"></div>
+    </div>
+  </div>
+
+  <!-- Print Notice Modal -->
+  <div id="printModal" class="modal-overlay hidden">
+    <div class="modal-box print-box">
+      <button class="modal-close" onclick="closePrintModal()">&times;</button>
+      <div class="print-head">
+        <h2>APEX INSTITUTE OF TECHNOLOGY</h2>
+        <p>DIRECTORATE OF ACADEMIC EVALUATION &amp; EXAMINATIONS</p>
+        <div class="print-ref">Ref: AIT/DEAN/ATT-SHORT/2026/042</div>
+      </div>
+      <h4 class="print-notice-title">MANDATORY NOTICE: EXAMINATION DENIAL FOR ATTENDANCE SHORTAGE</h4>
+      <p class="print-p">Students listed below have failed to maintain the compulsory 75.0% attendance requirement under University Ordinance 7.1:</p>
+      <div class="table-wrapper">
+        <table class="data-table" id="printTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>ROLL</th>
+              <th class="text-center">ATTENDED/TOTAL</th>
+              <th class="text-center">PERCENTAGE</th>
+              <th>SANCTION</th>
+            </tr>
+          </thead>
+          <tbody id="printTableBody"></tbody>
+        </table>
+      </div>
+      <div class="print-foot">
+        <div><strong>Dr. Aris Thorne</strong><br>Course Faculty</div>
+        <div class="text-right"><strong>Prof. Dr. M. K. Narayanan</strong><br>Dean of Academics</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-action" onclick="closePrintModal()">Close</button>
+        <button class="btn-save" onclick="window.print()">Print Official Document</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

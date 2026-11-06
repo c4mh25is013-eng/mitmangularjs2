@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="attendanceApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance & Shortage Warning System</title>
+    <!-- Include Supabase JS SDK via CDN -->
+    <script src="node_modules/angular/angular.js"></script>
+    <!-- Include AngularJS via CDN -->
+    <script src="app.js"></script>
+</head>
+<body ng-controller="AttendanceController">
+
+    <h2>Attendance Management System</h2>
+
+    <!-- Add Student Form -->
+    <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; width: 300px;">
+        <h3>Add New Student</h3>
+        <form ng-submit="saveStudent()">
+            <div>
+                <label>Name:</label><br>
+                <input type="text" ng-model="newStudent.name" placeholder="Enter student name" required>
+            </div>
+            <br>
+            <div>
+                <label>Department:</label><br>
+                <input type="text" ng-model="newStudent.department" placeholder="Enter department" required>
+            </div>
+            <br>
+            <button type="submit">Save Student</button>
+        </form>
+    </div>
+
+    <!-- Mark Attendance Form -->
+    <div style="padding: 15px; border: 1px solid #ccc; width: 300px;">
+        <h3>Mark Attendance</h3>
+        <form ng-submit="saveAttendance()">
+            <div>
+                <label>Session ID:</label><br>
+                <input type="number" ng-model="attendanceData.session_id" required>
+            </div>
+            <br>
+            <div>
+                <label>Student ID:</label><br>
+                <input type="number" ng-model="attendanceData.student_id" required>
+            </div>
+            <br>
+            <div>
+                <label>Status:</label><br>
+                <select ng-model="attendanceData.status">
+                    <option value="P">Present (P)</option>
+                    <option value="A">Absent (A)</option>
+                </select>
+            </div>
+            <br>
+            <button type="submit">Save Attendance</button>
+        </form>
+    </div>
+
+    <!-- Link to your JavaScript Controller File -->
+    <script src="app.js"></script>
+</body>
+</html>
